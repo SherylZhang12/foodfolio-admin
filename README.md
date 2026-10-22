@@ -26,7 +26,8 @@ Run `npm run dev` and open http://localhost:3004.
 ## Database setup (existing Foodfolio database only)
 
 1. Run `supabase/week6_admin.sql` in the existing Foodfolio project's SQL Editor.
-   It assumes the Week 3–5 tables already exist. The migration runs in a transaction.
+   Then run `supabase/week6_admin_photos.sql` to enable photo attachments.
+   It assumes the Week 3–5 tables already exist. Both migrations run in transactions.
 2. Sign in with your Google account in the main Foodfolio app at least once.
 3. Find YOUR exact UUID under Supabase Authentication > Users.
 4. In SQL Editor, run `update public.profiles set is_superadmin=true where id='YOUR-EXACT-UUID';`.
@@ -92,7 +93,10 @@ an empty search_path, and revoke anonymous execution. The app never directly
 grants broad CRUD policies to nonadmins. Admin image URLs expire in ten minutes.
 Deletion removes the database record and cascading votes/bookmarks; retained
 storage files are intentionally not deleted. Creation imports actual AI output;
-it does not call the model again or upload a new image. Statistics currently
+it does not call the model again. New and edited records support optional JPG, PNG,
+WebP photo uploads (10 MB) with a local preview. Uploads use private Storage; the
+admin-only RPC validates ownership, existence, MIME type and size before linking a photo.
+Replacing a photo retains the previous storage file. Statistics currently
 fetch the complete small class-project dataset; add pagination before large-scale use.
 
 Run `npm test`, `npm run check`, and `npm run build` to validate locally.
