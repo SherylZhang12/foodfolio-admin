@@ -1,0 +1,10 @@
+import {adminData,requireAdmin} from '@/lib/db';
+import {MediaForm,DeleteForm} from './forms';
+export default async function MediaPage({searchParams}:{searchParams:Promise<{q?:string}>}){
+  const {data}=await adminData();const {client}=await requireAdmin();const {q=''}=await searchParams;
+  const items=data.media.filter(x=>(x.dish+' '+x.caption+' '+x.tone).toLowerCase().includes(q.toLowerCase()));
+  const paths=[...new Set(items.flatMap(x=>[x.original_path,x.image_path]).filter((x):x is string=>!!x))];
+  const urls=new Map<string,string>();
+  if(paths.length){const {data:signed}=await client.storage.from('food-photos').createSignedUrls(paths,600);signed?.forEach(x=>{if(x.path&&x.signedUrl)urls.set(x.path,x.signedUrl);});}
+  return <main><p className="eyebrow">CONTENT WORKBENCH</p><h1>AI media<span>.</span></h1><p className="sub">Browse reactions, edit details, or import an AI creation.</p><details className="panel"><summary>＋ Create AI media</summary><MediaForm/></details><form className="search"><input name="q" defaultValue={q} placeholder="Search food, caption or character" aria-label="Search media"/><button>Search</button></form><p>{items.length} matching creations · newest first</p><div className="media-grid">{items.map(item=><article key={item.id} className="panel"><span className="badge">{item.published_at?'Published':'Private draft'}</span><h2>{item.dish}</h2>{[item.original_path,item.image_path].filter((p):p is string=>!!p&&urls.has(p)).map(p=><img key={p} src={urls.get(p)} alt={`${item.dish} food media`} style={{width:'100%',maxHeight:240,objectFit:'contain',borderRadius:10}}/>)}<blockquote>{item.caption}</blockquote><p>{item.tone} · {new Date(item.created_at).toLocaleDateString('en-US',{timeZone:'UTC'})}</p><small>ID: {item.id}</small><details><summary>Edit creation</summary><MediaForm item={item}/></details><DeleteForm id={item.id}/></article>)}</div>{!items.length&&<p className="panel">No matching creations. Try another search or add one above.</p>}</main>;
+}

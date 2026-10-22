@@ -1,0 +1,4 @@
+import Link from 'next/link';
+import {requireAdmin} from '@/lib/db';
+export const dynamic='force-dynamic';
+export default async function AdminLayout({children}:{children:React.ReactNode}){await requireAdmin();return <div className="shell"><aside className="sidebar"><Link href="/admin" className="logo">f<span> / studio</span></Link><p className="eyebrow">COMMUNITY KITCHEN</p><nav><Link href="/admin">◈ Overview</Link><Link href="/admin/media">✦ AI media</Link><Link href="/admin/users">♙ Users & profiles</Link><Link href="/admin/ratings">★ Votes & ratings</Link></nav><p className="sidebar-note">A thoughtful space to keep<br/>the community cooking.</p><Link href="/login">Account / sign out →</Link></aside><div className="workspace"><header><span>Foodfolio / Administration</span><span className="badge">● Superadmin access</span></header>{children}</div></div>;}
