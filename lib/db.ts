@@ -22,5 +22,5 @@ export async function adminData() {
   if (error) throw new Error('Admin data unavailable. Check the Week 6 database migration.');
   return {data:data as AdminData,user};
 }
-export type Media = {id:string;user_id:string;dish:string;caption:string;tone:string;model:string;created_at:string;published_at:string|null;original_path:string|null;image_path:string|null};
+export type Media = {id:string;user_id:string;dish:string;caption:string;tone:string;model:string;created_at:string;published_at:string|null;original_path:string|null;image_path:string|null;personal_rating:number|null;personal_review:string|null};
 export type AdminData = {profiles:Record<string,unknown>[];media:Media[];votes:Record<string,unknown>[];preferences:Record<string,unknown>[];sample_ratings:Record<string,unknown>[];stats:{users:number;media:number;published:number;upvotes:number;downvotes:number;preferences:number};personas:{name:string;count:number}[];daily:{day:string;count:number}[]};

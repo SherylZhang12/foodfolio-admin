@@ -11,7 +11,8 @@ repository and NEW Vercel project, as required by the assignment.
 - Users: read registered users, emails, profile names, IDs, join dates and admin flags.
 - AI media: read text and signed photo previews, search, create/import a genuine
   AI-generated reaction with its original prompts, edit, delete with typed confirmation.
-- Ratings: read upvotes/downvotes, personal food preferences and earlier sample ratings.
+- Ratings: read upvotes/downvotes, meal reviews (1–5 stars), personal food
+  preferences (1–10) and earlier sample ratings (1–10).
 - Consistent navigation, friendly failure/empty states, responsive layout, clear action labels.
 
 ## Local setup
@@ -26,8 +27,9 @@ Run `npm run dev` and open http://localhost:3004.
 ## Database setup (existing Foodfolio database only)
 
 1. Run `supabase/week6_admin.sql` in the existing Foodfolio project's SQL Editor.
-   Then run `supabase/week6_admin_photos.sql` to enable photo attachments.
-   It assumes the Week 3–5 tables already exist. Both migrations run in transactions.
+   Then run `supabase/week6_admin_photos.sql` to enable photo attachments
+   and `supabase/week6_admin_meal_ratings.sql` to include meal star ratings.
+   It assumes the Week 3–5 tables already exist. All migrations run in transactions.
 2. Sign in with your Google account in the main Foodfolio app at least once.
 3. Find YOUR exact UUID under Supabase Authentication > Users.
 4. In SQL Editor, run `update public.profiles set is_superadmin=true where id='YOUR-EXACT-UUID';`.
@@ -100,3 +102,16 @@ Replacing a photo retains the previous storage file. Statistics currently
 fetch the complete small class-project dataset; add pagination before large-scale use.
 
 Run `npm test`, `npm run check`, and `npm run build` to validate locally.
+
+## Feedback implemented
+
+The feedback available for this project asked for clearer first-time navigation
+and introductions to the different personas. The main app now has a "New here?"
+entry, purpose and step guides, a four-step posting guide and named persona cards
+with descriptions. The admin uses the same four explicit destinations throughout.
+Meal ratings, AI votes and food preference ratings are shown separately with
+their scales. This maps the feedback actually provided; additional Week 5
+feedback must be checked separately if it exists.
+
+For grading, the instructor's nominated Google account must have an approved
+profile role. Role grants require the database owner's explicit approval.
